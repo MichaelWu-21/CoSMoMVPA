@@ -15,7 +15,7 @@ env:
     - MVPAPATH=${COSMOPATH}/mvpa
  matrix:
     - EXTERNALS=""
-    - EXTERNALS="afni surfing fieldtrip libsvm gifti octave_pkg_parallel octave_pkg_statistics"
+    - EXTERNALS="afni surfing fieldtrip libsvm gifti octave_pkg_parallel octave_pkg_statistics afni_bin"
 before_install:
     # to prevent IPv6 being used for APT
     - sudo bash -c "echo 'Acquire::ForceIPv4 \"true\";' > /etc/apt/apt.conf.d/99force-ipv4"
@@ -103,6 +103,14 @@ install:
                           addpath('${PTH}/${GIFTI_NAME}');
                           savepath();";
       fi
+
+    # optionally install AFNI binaries
+    if [[ " $EXTERNALS " = *" afni_bin "* ]]; then
+        wget -O- http://neuro.debian.net/lists/precise.de-m.libre | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list;
+        sudo apt-key adv --recv-keys --keyserver hkp://pgp.mit.edu:80 0xA5D32F012649A5A9;
+        sudo apt-get update;
+        sudo apt-get install afni;
+    fi
 
     # disable "more"
     - echo "more('off');" >> $OCTAVERC
