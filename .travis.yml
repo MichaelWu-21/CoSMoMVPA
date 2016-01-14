@@ -119,6 +119,8 @@ install:
 script:
     - pwd
     - ls
+    - cd CoSMoMVPA
+    - ls
     - if [[  "$WITH_COVERAGE" == "true" ]]; then
           TEST_ARGS=COVERAGE_DIR=`pwd`/mvpa;
 
@@ -138,7 +140,6 @@ script:
           fi;
       fi
 
-    - cd CoSMoMVPA
     - make test $TEST_ARGS $COVERAGE_ARGS
     - ls
     - $AFTER_SCRIPT
