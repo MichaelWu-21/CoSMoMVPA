@@ -32,7 +32,7 @@ INSTALL=$(ADDPATH)";"$(SAVEPATH)
 UNINSTALL=$(RMPATH)";"$(SAVEPATH)
 TEST=$(ADDPATH)"; \
      cd('$(TESTDIR)'); \
-     success=cosmo_run_tests(); \
+     success=cosmo_run_tests('-verbose'); \
      exit(~success);"
 
 help:
