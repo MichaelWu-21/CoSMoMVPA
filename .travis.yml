@@ -137,6 +137,8 @@ script:
       fi
 
     - cd ${COSMOPATH}
+    - pwd
+    - ls
     - make test $TEST_ARGS $COVERAGE_ARGS
     - ls
     - $AFTER_SCRIPT
