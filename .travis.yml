@@ -138,7 +138,7 @@ script:
           fi;
       fi
 
-    - make test $TEST_ARGS $COVERAGE_ARGS
+    - make -C CoSMoMVPA test $TEST_ARGS $COVERAGE_ARGS
     - ls
     - $AFTER_SCRIPT
 
