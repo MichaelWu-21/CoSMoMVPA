@@ -20,6 +20,35 @@ DOCUMENTATION_HTML_PREFIX=CoSMoMVPA_documentation_html
 DOCARCHIVEDIR=$(DOCBUILDDIR)/$(DOCUMENTATION_HTML_PREFIX)
 DOCUMENTATION_FILES_TO_ARCHIVE=AUTHOR copyright README.rst
 
+RUNTESTS_ARGS?='-verbose'
+ifdef JUNIT_XML
+	ifdef RUNTESTS_ARGS
+		RUNTESTS_ARGS+=,
+	endif
+	RUNTESTS_ARGS +='-junit_xml','$(JUNIT_XML)'
+endif
+
+ifdef COVERAGE_DIR
+	ifdef RUNTESTS_ARGS
+		RUNTESTS_ARGS+=,
+	endif
+
+	RUNTESTS_ARGS+='-coverage_dir','$(COVERAGE_DIR)'
+	export COVERAGE_DIR
+
+	ifdef COVERALLS_JSON
+		 RUNTESTS_ARGS+=,'-coveralls_json','$(COVERALLS_JSON)'
+		 export COVERALLS_JSON
+	endif
+
+	ifdef COBERTURA_XML
+		 RUNTESTS_ARGS+=,'-cobertura_xml','$(COBERTURA_XML)'
+		 export COBERTURA_XML
+	endif
+endif
+		
+export RUNTESTS_ARGS
+
 
 ADDPATH="cd('$(MVPADIR)');cosmo_set_path()"
 RMPATH="cd('$(MVPADIR)'); \
@@ -32,7 +61,7 @@ INSTALL=$(ADDPATH)";"$(SAVEPATH)
 UNINSTALL=$(RMPATH)";"$(SAVEPATH)
 TEST=$(ADDPATH)"; \
      cd('$(TESTDIR)'); \
-     success=cosmo_run_tests('-verbose'); \
+     success=cosmo_run_tests($(RUNTESTS_ARGS)); \
      exit(~success);"
 
 help:
@@ -119,14 +148,14 @@ uninstall:
 
 
 test-matlab:
-	@if [ -n "$(MATLAB_BIN)" ]; then \
+	if [ -n "$(MATLAB_BIN)" ]; then \
 		$(MATLAB_RUN_CLI) $(TEST); \
 	else \
 		echo "matlab binary could not be found, skipping"; \
 	fi;
 
 test-octave:
-	@if [ -n "$(OCTAVE_BIN)" ]; then \
+	if [ -n "$(OCTAVE_BIN)" ]; then \
 		$(OCTAVE_RUN_CLI) $(TEST); \
 	else \
 		echo "octave binary could not be found, skipping"; \

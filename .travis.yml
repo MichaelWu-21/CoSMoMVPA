@@ -14,8 +14,14 @@ env:
     - COSMOPATH=`pwd`
     - MVPAPATH=${COSMOPATH}/mvpa
  matrix:
-    - EXTERNALS=""
-    - EXTERNALS="afni surfing fieldtrip libsvm gifti octave_pkg_parallel octave_pkg_statistics"
+   include:
+      - EXTERNALS=""
+        WITH_COVERAGE=
+      - EXTERNALS="afni surfing fieldtrip libsvm gifti octave_pkg_parallel octave_pkg_statistics"
+        WITH_COVERAGE=
+      - EXTERNALS="afni surfing fieldtrip libsvm gifti octave_pkg_parallel octave_pkg_statistics"
+        WITH_COVERAGE=true
+
 before_install:
     # to prevent IPv6 being used for APT
     - sudo bash -c "echo 'Acquire::ForceIPv4 \"true\";' > /etc/apt/apt.conf.d/99force-ipv4"
@@ -38,7 +44,7 @@ before_install:
 
     # go up one level to retrieve MOxUnit
     - cd ..
-    - git clone git://github.com/nno/MOxUnit.git
+    - git clone -b _nf/mocov_dir git://github.com/nno/MOxUnit.git
     - make -C MOxUnit install
 install:
     - PTH=`pwd`
@@ -108,8 +114,35 @@ install:
 
     # disable "more"
     - echo "more('off');" >> $OCTAVERC
+    # prevent shippable from re-using old test results
+    - if [[  "$SHIPPABLE" == "true"  ]]; then
+          rm -f shippable/testresults/*.xml;
+      fi
+
 
 script:
     - cd ${COSMOPATH}
-    - make test
+    -  if [[  "$WITH_COVERAGE" == "true" ]]; then
+          TEST_ARGS=COVERAGE_DIR=`pwd`/mvpa;
+
+          if [[  "$SHIPPABLE" == "true"  ]]; then
+              COVERAGE_ARGS=COBERTURA_XML=shippable/codecoverage/coverage.xml;
+              AFTER_SCRIPT=cat shippable/codecoverage/coverage.xml;
+          elif [[  "$TRAVIS" == "true"  ]]; then
+              JSON_FILE=coveralls.json
+              COVERAGE_ARGS=COVERALLS_JSON=coveralls.json;
+              AFTER_SCRIPT="curl --verbose -F json_file=@coveralls.json https://coveralls.io/api/v1/jobs";
+          fi;
+
+          TEST_ARGS="$TEST_ARGS $COVERAGE_ARGS";
+      else
+          if [[  "$SHIPPABLE" == "true"  ]]; then
+              TEST_ARGS=JUNIT_XML=shippable/testresults/test_results.xml;
+          fi;
+      fi
+
+    - cd ${COSMOPATH}
+    - make test $TEST_ARGS COVERAGE_ARGS
+    - ls
+    - $AFTER_SCRIPT
 

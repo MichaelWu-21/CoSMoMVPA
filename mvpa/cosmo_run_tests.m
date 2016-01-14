@@ -139,6 +139,7 @@ function did_pass=cosmo_run_tests(varargin)
 
     run_doctest=~opt.no_doctest;
     run_unittest=~opt.no_unittest;
+    opt.doctest_location=[];
 
     has_logfile=~isempty(opt.logfile);
 
@@ -154,8 +155,10 @@ function did_pass=run_doctest_helper(opt,unused)
     did_pass=true;
 
     location=opt.doctest_location;
-    if isempty(location)
+    if ~ischar(location)
         return;
+    elseif isempty(location)
+        location=get_default_dir('doc');
     end
 
     if cosmo_wtf('is_octave')
@@ -175,7 +178,7 @@ function did_pass=run_doctest_helper(opt,unused)
         monitor_constructor=@TestRunDisplay;
     end
 
-    has_logfile=~isempty(opt.logfile);
+    has_logfile=ischar(opt.logfile);
     if has_logfile
         fid=fopen(opt.logfile,'w');
         file_closer=onCleanup(@()fclose(fid));
@@ -191,8 +194,11 @@ function did_pass=run_unittest_helper(opt,args)
     did_pass=true;
 
     location=opt.unittest_location;
-    if isempty(location)
+    if ~ischar(location)
         return;
+    elseif isempty(location)
+        location=get_default_dir('unit');
+        args{end+1}=location;
     end
 
     cd(opt.run_from_dir);
@@ -207,7 +213,8 @@ function s=get_all_test_runners_struct()
     s.moxunit.runner=@moxunit_runtests;
     s.moxunit.arg_with_value={'-coverage_dir',...
                                  '-coveralls_json',...
-                                 '-cobertura_xml'};
+                                 '-cobertura_xml',...
+                                 '-junit_xml'};
 
     s.xunit.runner=@runtests;
     s.xunit.arg_with_value={};
@@ -232,6 +239,18 @@ function value=get_test_field(sub_key)
     value=s.(key).(sub_key);
 
 
+function d=get_default_dir(name)
+    switch name
+        case 'root'
+            d=fileparts(fileparts(mfilename('fullpath')));
+
+        case 'unit'
+            d=fullfile(get_default_dir('root'),'tests');
+
+        case 'doc'
+            d=fullfile(get_default_dir('root'),'mvpa');
+    end
+
 
 function [opt,passthrough_args]=get_opt(varargin)
     defaults=struct();
@@ -239,16 +258,8 @@ function [opt,passthrough_args]=get_opt(varargin)
     defaults.no_doctest=false;
     defaults.no_unittest=false;
     defaults.logfile=[];
-
-    root_dir=fileparts(fileparts(mfilename('fullpath')));
-    unittest_dir=fullfile(root_dir,'tests');
-    doctest_dir=fullfile(root_dir,'mvpa');
-
-
-
-    defaults.unittest_location=unittest_dir;
-    defaults.doctest_location=doctest_dir;
-
+    defaults.unittest_location='';
+    defaults.doctest_location='';
 
     n_args=numel(varargin);
     passthrough_args=varargin;
@@ -257,7 +268,7 @@ function [opt,passthrough_args]=get_opt(varargin)
 
     arg_with_value=get_test_field('arg_with_value');
     opt=defaults;
-    opt.run_from_dir=unittest_dir;
+    opt.run_from_dir=get_default_dir('unit');
 
     while k<n_args
         k=k+1;
@@ -287,8 +298,7 @@ function [opt,passthrough_args]=get_opt(varargin)
                         k=k+1;
                     end
                 else
-                    test_location=get_location(arg,...
-                                    {'',unittest_dir,doctest_dir});
+                    test_location=get_location(arg);
                     passthrough_args{k}=test_location;
 
                     opt.unittest_location=test_location;
@@ -306,7 +316,8 @@ function [opt,passthrough_args]=get_opt(varargin)
         opt.doctest_location=[];
     end
 
-function full_path=get_location(location,parent_dirs)
+function full_path=get_location(location)
+    parent_dirs={'',get_default_dir('unit'),get_default_dir('doc')};
     n=numel(parent_dirs);
     for use_which=[false,true]
         for k=1:n
