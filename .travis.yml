@@ -113,10 +113,12 @@ install:
     - if [[  "$SHIPPABLE" == "true"  ]]; then
           rm -f shippable/testresults/*.xml;
       fi
+ 
 
 
 script:
-    - cd ${COSMOPATH}
+    - pwd
+    - ls
     - if [[  "$WITH_COVERAGE" == "true" ]]; then
           TEST_ARGS=COVERAGE_DIR=`pwd`/mvpa;
 
@@ -136,9 +138,6 @@ script:
           fi;
       fi
 
-    - cd ${COSMOPATH}
-    - pwd
-    - ls
     - make test $TEST_ARGS $COVERAGE_ARGS
     - ls
     - $AFTER_SCRIPT
