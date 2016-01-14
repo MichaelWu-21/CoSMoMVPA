@@ -125,18 +125,18 @@ script:
           TEST_ARGS=COVERAGE_DIR=`pwd`/mvpa;
 
           if [[  "$SHIPPABLE" == "true"  ]]; then
-              COVERAGE_ARGS=COBERTURA_XML=shippable/codecoverage/coverage.xml;
-              AFTER_SCRIPT=cat shippable/codecoverage/coverage.xml;
+              COVERAGE_ARGS=COBERTURA_XML=`pwd`/shippable/codecoverage/coverage.xml;
+              AFTER_SCRIPT=cat `pwd`/shippable/codecoverage/coverage.xml;
           elif [[  "$TRAVIS" == "true"  ]]; then
-              JSON_FILE=coveralls.json
-              COVERAGE_ARGS=COVERALLS_JSON=coveralls.json;
-              AFTER_SCRIPT="curl --verbose -F json_file=@coveralls.json https://coveralls.io/api/v1/jobs";
+              JSON_FILE=`pwd`/coveralls.json
+              COVERAGE_ARGS=COVERALLS_JSON=`pwd`/coveralls.json;
+              AFTER_SCRIPT="curl --verbose -F json_file=@`pwd`/coveralls.json https://coveralls.io/api/v1/jobs";
           fi;
 
           TEST_ARGS="$TEST_ARGS $COVERAGE_ARGS";
       else
           if [[  "$SHIPPABLE" == "true"  ]]; then
-              TEST_ARGS=JUNIT_XML=shippable/testresults/test_results.xml;
+              TEST_ARGS=JUNIT_XML=`pwd`/shippable/testresults/test_results.xml;
           fi;
       fi
 
