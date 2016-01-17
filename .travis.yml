@@ -14,8 +14,8 @@ env:
     - COSMOPATH=`pwd`
     - MVPAPATH=${COSMOPATH}/mvpa
   matrix:
-    - EXTERNALS="" WITH_COVERAGE=""
-    - EXTERNALS="afni surfing fieldtrip libsvm gifti octave_pkg_parallel octave_pkg_statistics" WITH_COVERAGE=
+    - EXTERNALS=""
+    - EXTERNALS="afni surfing fieldtrip libsvm gifti octave_pkg_parallel octave_pkg_statistics"
     - EXTERNALS="afni surfing fieldtrip libsvm gifti octave_pkg_parallel octave_pkg_statistics" WITH_COVERAGE=true
 before_install:
     # to prevent IPv6 being used for APT

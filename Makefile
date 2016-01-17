@@ -21,32 +21,40 @@ DOCARCHIVEDIR=$(DOCBUILDDIR)/$(DOCUMENTATION_HTML_PREFIX)
 DOCUMENTATION_FILES_TO_ARCHIVE=AUTHOR copyright README.rst
 
 RUNTESTS_ARGS?='-verbose'
+	
 ifdef JUNIT_XML
-	ifdef RUNTESTS_ARGS
-		RUNTESTS_ARGS+=,
-	endif
-	RUNTESTS_ARGS +='-junit_xml','$(JUNIT_XML)'
+	RUNTESTS_ARGS +=,'-junit_xml','$(JUNIT_XML)'
 endif
 
-ifdef COVERAGE_DIR
-	ifdef RUNTESTS_ARGS
-		RUNTESTS_ARGS+=,
+ifdef WITH_COVERAGE
+	ifndef COVER
+		#$(error COVER variable must be set when using WITH_COVERAGE)
+	endif
+	RUNTESTS_ARGS+=,'-with_coverage','-cover','$(COVER)'
+	export COVER
+
+	ifdef COVER_XML_FILE
+		 RUNTESTS_ARGS+=,'-cover_xml_file','$(COVER_XML_FILE)'
+		 export COVER_XML_FILE
 	endif
 
-	RUNTESTS_ARGS+='-coverage_dir','$(COVERAGE_DIR)'
-	export COVERAGE_DIR
-
-	ifdef COVERALLS_JSON
-		 RUNTESTS_ARGS+=,'-coveralls_json','$(COVERALLS_JSON)'
-		 export COVERALLS_JSON
+	ifdef COVER_HTML_DIR
+		 RUNTESTS_ARGS+=,'-cover_html_dir','$(COVER_HTML_DIR)'
+		 export COVER_HTML_DIR
 	endif
 
-	ifdef COBERTURA_XML
-		 RUNTESTS_ARGS+=,'-cobertura_xml','$(COBERTURA_XML)'
-		 export COBERTURA_XML
+	ifdef COVER_JSON_FILE
+		 RUNTESTS_ARGS+=,'-cover_json_file','$(COVER_JSON_FILE)'
+		 export COVER_JSON_FILE
+	endif
+
+	ifdef JUNIT_XML_FILE
+		 RUNTESTS_ARGS+=,'-junit_xml_file','$(JUNIT_XML_FILE)'
+		 export JUNIT_XML_FILE
 	endif
 endif
 		
+	
 export RUNTESTS_ARGS
 
 
