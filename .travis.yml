@@ -123,20 +123,19 @@ script:
     - ls
     - if [[  "$WITH_COVERAGE" == "true" ]]; then
           TEST_ARGS=WITH_COVERAGE=true;
-          COVER_ARGS=COVER=`pwd`/mvpa;
+          COVER_ARGS=COVER=`pwd`/CoSMoMVPA;
 
           if [[  "$SHIPPABLE" == "true"  ]]; then
               OUTPUT_ARGS=COVER_XML_FILE=shippable/codecoverage/coverage.xml;
           elif [[  "$TRAVIS" == "true"  ]]; then
-              OUTPUT_ARGS=COVER_JSON_FILE=coveralls.json;
-              AFTER_SCRIPT="curl --verbose -F json_file=@coveralls.json https://coveralls.io/api/v1/jobs";
+              OUTPUT_ARGS=COVER_JSON_FILE=`pwd`/coveralls.json;
+              AFTER_SCRIPT="curl --verbose -F json_file=@`pwd`/coveralls.json https://coveralls.io/api/v1/jobs";
           fi;
       elif [[  "$SHIPPABLE" == "true"  ]]; then
           RESULT_ARGS=JUNIT_XML_FILE=shippable/testresults/test_results.xml;
       fi
+    - echo Test arguments $TEST_ARGS $COVER_ARGS $OUTPUT_ARGS $RESULT_ARGS
     - make test $TEST_ARGS $COVER_ARGS $OUTPUT_ARGS $RESULT_ARGS
-    - pwd
-    - ls
     - $AFTER_SCRIPT
 
 
