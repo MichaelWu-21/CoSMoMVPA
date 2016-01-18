@@ -123,7 +123,7 @@ script:
     - ls
     - if [[  "$WITH_COVERAGE" == "true" ]]; then
           TEST_ARGS=WITH_COVERAGE=true;
-          COVER_ARGS=COVER=`pwd`/MOxUnit;
+          COVER_ARGS=COVER=`pwd`/mvpa;
 
           if [[  "$SHIPPABLE" == "true"  ]]; then
               OUTPUT_ARGS=COVER_XML_FILE=shippable/codecoverage/coverage.xml;
