@@ -122,25 +122,20 @@ script:
     - cd CoSMoMVPA
     - ls
     - if [[  "$WITH_COVERAGE" == "true" ]]; then
-          TEST_ARGS=COVERAGE_DIR=`pwd`/mvpa;
+          TEST_ARGS=WITH_COVERAGE=true;
+          COVER_ARGS=COVER=`pwd`/MOxUnit;
 
           if [[  "$SHIPPABLE" == "true"  ]]; then
-              COVERAGE_ARGS=COBERTURA_XML=`pwd`/shippable/codecoverage/coverage.xml;
-              AFTER_SCRIPT=cat `pwd`/shippable/codecoverage/coverage.xml;
+              OUTPUT_ARGS=COVER_XML_FILE=shippable/codecoverage/coverage.xml;
           elif [[  "$TRAVIS" == "true"  ]]; then
-              JSON_FILE=`pwd`/coveralls.json
-              COVERAGE_ARGS=COVERALLS_JSON=`pwd`/coveralls.json;
-              AFTER_SCRIPT="curl --verbose -F json_file=@`pwd`/coveralls.json https://coveralls.io/api/v1/jobs";
+              OUTPUT_ARGS=COVER_JSON_FILE=coveralls.json;
+              AFTER_SCRIPT="curl --verbose -F json_file=@coveralls.json https://coveralls.io/api/v1/jobs";
           fi;
-
-          TEST_ARGS="$TEST_ARGS $COVERAGE_ARGS";
-      else
-          if [[  "$SHIPPABLE" == "true"  ]]; then
-              TEST_ARGS=JUNIT_XML=`pwd`/shippable/testresults/test_results.xml;
-          fi;
+      elif [[  "$SHIPPABLE" == "true"  ]]; then
+          RESULT_ARGS=JUNIT_XML_FILE=shippable/testresults/test_results.xml;
       fi
-
-    - make test $TEST_ARGS $COVERAGE_ARGS
+    - make test $TEST_ARGS $COVER_ARGS $OUTPUT_ARGS $RESULT_ARGS
+    - pwd
     - ls
     - $AFTER_SCRIPT
 
