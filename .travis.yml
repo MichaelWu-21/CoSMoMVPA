@@ -39,6 +39,7 @@ before_install:
 
     # go up one level to retrieve MOxUnit
     - cd ..
+    - rm -rf MOxUnit
     - git clone -b _nf/mocov_dir git://github.com/nno/MOxUnit.git
     - make -C MOxUnit install
 install:
@@ -63,12 +64,14 @@ install:
 
     # optionally install surfing toolbox
     - if [[ " $EXTERNALS " = *" surfing "* ]]; then
+          rm -rf surfing;
           git clone git://github.com/nno/surfing.git --depth 1;
           make -C surfing install;
       fi
 
     # optionally install afni
     - if [[ " $EXTERNALS " = *" afni "* ]]; then
+          rm -rf afni;
           git clone git://github.com/afni/afni.git --depth 1;
           $OCTAVE --eval "addpath('${PTH}/afni/src/matlab');savepath();";
       fi
@@ -80,6 +83,7 @@ install:
     # (PR: https://github.com/fieldtrip/fieldtrip/pull/54)
     # TODO: git clone git://github.com/fieldtrip/fieldtrip.git --depth 1
     - if [[ " $EXTERNALS " = *" fieldtrip "* ]]; then
+          rm -rf fieldtrip;
           git clone -b _enh/octave git://github.com/nno/fieldtrip.git;
           $OCTAVE --eval "cd('${PTH}/fieldtrip');
                             ft_defaults();
@@ -88,6 +92,7 @@ install:
 
     # optionally install libsvm
     - if [[ " $EXTERNALS " = *" libsvm "* ]]; then
+          rm -rf libsvm;
           git clone git://github.com/cjlin1/libsvm.git;
           $OCTAVE --eval "cd('${PTH}/libsvm/matlab');
                         make;
@@ -99,6 +104,7 @@ install:
     - if [[ " $EXTERNALS " = *" gifti "* ]]; then
           GIFTI_VERSION=1.5;
           GIFTI_NAME=gifti-${GIFTI_VERSION};
+          rm -rf ${GIFTI_NAME}.zip;
           wget http://www.artefact.tk/software/matlab/gifti/${GIFTI_NAME}.zip;
           unzip ${GIFTI_NAME}.zip;
           $OCTAVE --eval "cd('${PTH}/${GIFTI_NAME}/@gifti/private');
