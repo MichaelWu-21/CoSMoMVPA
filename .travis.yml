@@ -114,20 +114,21 @@ install:
           rm -f shippable/testresults/*.xml;
       fi
 
-    # optionally enable Octave parallel package
-    - if [[ " $EXTERNALS " = *" octave_pkg_parallel "* ]]; then
-          $OCTAVE --eval "pkg('install','-forge','parallel');";
-          echo "" >> $OCTAVERC;
-          echo "pkg load parallel;" >> $OCTAVERC;
-      fi
 
 before_script:
     # optionally enable Octave statistics package
     - if [[ " $EXTERNALS " = *" octave_pkg_statistics "* ]]; then
-          $OCTAVE --eval "pkg('install','-forge','io');";
+          $OCTAVE --eval "pkg('install','-forge','-auto','io');";
           $OCTAVE --eval "pkg('install','-forge','statistics');";
           echo "pkg load statistics;" >> $OCTAVERC;
       fi
+    # optionally enable Octave parallel package
+    - if [[ " $EXTERNALS " = *" octave_pkg_parallel "* ]]; then
+          $OCTAVE --eval "pkg('install','-forge','-auto','parallel');";
+          echo "" >> $OCTAVERC;
+          echo "pkg load parallel;" >> $OCTAVERC;
+      fi
+
 
  
 
@@ -139,7 +140,7 @@ before_script:
           $OCTAVE --eval "disp(which('parcellfun'));exit(isempty(which('parcellfun')))";
           $OCTAVE --eval "pkg load parallel;disp('p');exit(isempty(which('parcellfun')))";
           $OCTAVE --eval "disp(which('parcellfun'));exit(isempty(which('parcellfun')))";          
-          
+          $OCTAVE --eval "disp(pkg('list'));exit(isempty(which('parcellfun')))";                    
           $OCTAVE --eval "exit(~isequal(parcellfun(2,@abs,{-1,2},'VerboseLevel',0),[1 2]))";
       fi
 
