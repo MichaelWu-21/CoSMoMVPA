@@ -121,6 +121,7 @@ install:
           echo "pkg load parallel;" >> $OCTAVERC;
       fi
 
+before_script:
     # optionally enable Octave statistics package
     - if [[ " $EXTERNALS " = *" octave_pkg_statistics "* ]]; then
           $OCTAVE --eval "pkg('install','-forge','io');";
@@ -130,13 +131,15 @@ install:
 
  
 
-before_script:
+
     # verify presence of Octave packages
     - cat $OCTAVERC
     - if [[ " $EXTERNALS " = *" octave_pkg_parallel "* ]]; then
           $OCTAVE --eval "pkg describe -verbose all";
           $OCTAVE --eval "disp(which('parcellfun'));exit(isempty(which('parcellfun')))";
-          $OCTAVE --eval "pkg load parallel;disp('p');exit(isempty(which('parcellfun')))";          
+          $OCTAVE --eval "pkg load parallel;disp('p');exit(isempty(which('parcellfun')))";
+          $OCTAVE --eval "disp(which('parcellfun'));exit(isempty(which('parcellfun')))";          
+          
           $OCTAVE --eval "exit(~isequal(parcellfun(2,@abs,{-1,2},'VerboseLevel',0),[1 2]))";
       fi
 
