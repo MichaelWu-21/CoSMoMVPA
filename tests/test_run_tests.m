@@ -13,7 +13,7 @@ function test_run_tests_passing
     assert(~isempty(findstr('OK',output)));
 
 
-function XXtest_run_tests_failing
+function test_run_tests_failing
     test_content='assert(false);';
     [result,output]=helper_test_make_and_run(test_content);
     assertFalse(result);
