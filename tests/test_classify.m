@@ -6,7 +6,7 @@ function test_suite = test_classify
 
     initTestSuite;
 
-function XXtest_classify_lda
+function test_classify_lda
     cfy=@cosmo_classify_lda;
     handle=get_predictor(cfy);
     assert_predictions_equal(handle,[1 3 9 8 5 6 8 9 7 5 7 5 4 ...
@@ -25,7 +25,7 @@ function XXtest_classify_lda
     aet(x,1,1e4);
 
 
-function XXtest_classify_naive_bayes
+function test_classify_naive_bayes
     cfy=@cosmo_classify_naive_bayes;
     handle=get_predictor(cfy);
     assert_predictions_equal(handle,[1 7 3 9 2 2 8 9 7 4 7 2 4 ...
@@ -33,7 +33,7 @@ function XXtest_classify_naive_bayes
     general_test_classifier(cfy)
 
 
-function test_classify_meta_feature_selection
+function XXtest_classify_meta_feature_selection
     cfy=@cosmo_classify_meta_feature_selection;
     opt=struct();
     opt.child_classifier=@cosmo_classify_lda;
@@ -44,7 +44,7 @@ function test_classify_meta_feature_selection
                                     9 2 7 7 3 3 2 1 3 7 6 7 9 7 ]');
     general_test_classifier(cfy,opt)
 
-function test_cosmo_meta_feature_selection_classifier
+function XXtest_cosmo_meta_feature_selection_classifier
     % deprecated, so shows a warning
     warning_state=cosmo_warning();
     warning_state_resetter=onCleanup(@()cosmo_warning(warning_state));
