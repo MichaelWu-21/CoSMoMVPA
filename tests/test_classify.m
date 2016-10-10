@@ -33,7 +33,7 @@ function test_classify_naive_bayes
     general_test_classifier(cfy)
 
 
-function XXtest_classify_meta_feature_selection
+function test_classify_meta_feature_selection
     cfy=@cosmo_classify_meta_feature_selection;
     opt=struct();
     opt.child_classifier=@cosmo_classify_lda;
