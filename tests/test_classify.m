@@ -33,7 +33,7 @@ function XXtest_classify_naive_bayes
     general_test_classifier(cfy)
 
 
-function XXtest_classify_meta_feature_selection
+function test_classify_meta_feature_selection
     cfy=@cosmo_classify_meta_feature_selection;
     opt=struct();
     opt.child_classifier=@cosmo_classify_lda;
@@ -44,7 +44,7 @@ function XXtest_classify_meta_feature_selection
                                     9 2 7 7 3 3 2 1 3 7 6 7 9 7 ]');
     general_test_classifier(cfy,opt)
 
-function XXtest_cosmo_meta_feature_selection_classifier
+function test_cosmo_meta_feature_selection_classifier
     % deprecated, so shows a warning
     warning_state=cosmo_warning();
     warning_state_resetter=onCleanup(@()cosmo_warning(warning_state));
