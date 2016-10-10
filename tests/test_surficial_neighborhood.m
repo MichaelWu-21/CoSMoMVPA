@@ -94,7 +94,7 @@ function test_surficial_neighborhood_surface_dijkstra
 
 
 
-function test_surficial_neighborhood_surface_direct
+function XXtest_surficial_neighborhood_surface_direct
     if cosmo_skip_test_if_no_external('surfing')
         return;
     end
@@ -132,7 +132,7 @@ function test_surficial_neighborhood_surface_direct
 
     check_partial_neighborhood(ds,nh4,args);
 
-function test_surficial_neighborhood_surface_geodesic
+function XXtest_surficial_neighborhood_surface_geodesic
     if cosmo_skip_test_if_no_external('fast_marching') || ...
             cosmo_skip_test_if_no_external('surfing')
         return;
@@ -172,7 +172,7 @@ function test_surficial_neighborhood_surface_geodesic
                                  [ 5 2 6 3 ]
                                  [ 6 3 5 4 ] });
 
-function test_surficial_neighborhood_volume_geodesic
+function XXtest_surficial_neighborhood_volume_geodesic
     if cosmo_skip_test_if_no_external('fast_marching') || ...
             cosmo_skip_test_if_no_external('surfing')
         return;
@@ -210,7 +210,7 @@ function test_surficial_neighborhood_volume_geodesic
     assertEqual(nh1,nh2);
 
 
-function test_surficial_neighborhood_volume_dijkstra
+function XXtest_surficial_neighborhood_volume_dijkstra
     if cosmo_skip_test_if_no_external('surfing')
         return;
     end
