@@ -6,7 +6,7 @@ function test_suite = test_surficial_neighborhood
 
     initTestSuite;
 
-function XXtest_surficial_neighborhood_surface_dijkstra
+function test_surficial_neighborhood_surface_dijkstra
     if cosmo_skip_test_if_no_external('surfing')
         return;
     end
@@ -94,7 +94,7 @@ function XXtest_surficial_neighborhood_surface_dijkstra
 
 
 
-function XXtest_surficial_neighborhood_surface_direct
+function test_surficial_neighborhood_surface_direct
     if cosmo_skip_test_if_no_external('surfing')
         return;
     end
@@ -132,7 +132,7 @@ function XXtest_surficial_neighborhood_surface_direct
 
     check_partial_neighborhood(ds,nh4,args);
 
-function XXtest_surficial_neighborhood_surface_geodesic
+function test_surficial_neighborhood_surface_geodesic
     if cosmo_skip_test_if_no_external('fast_marching') || ...
             cosmo_skip_test_if_no_external('surfing')
         return;
@@ -172,7 +172,7 @@ function XXtest_surficial_neighborhood_surface_geodesic
                                  [ 5 2 6 3 ]
                                  [ 6 3 5 4 ] });
 
-function XXtest_surficial_neighborhood_volume_geodesic
+function test_surficial_neighborhood_volume_geodesic
     if cosmo_skip_test_if_no_external('fast_marching') || ...
             cosmo_skip_test_if_no_external('surfing')
         return;
@@ -210,7 +210,7 @@ function XXtest_surficial_neighborhood_volume_geodesic
     assertEqual(nh1,nh2);
 
 
-function XXtest_surficial_neighborhood_volume_dijkstra
+function test_surficial_neighborhood_volume_dijkstra
     if cosmo_skip_test_if_no_external('surfing')
         return;
     end
@@ -252,7 +252,7 @@ function XXtest_surficial_neighborhood_volume_dijkstra
     % check_partial_neighborhood(ds,nh3,args3);
     % check_partial_neighborhood(ds,nh3,args3);
 
-function XXtest_surficial_neighborhood_exceptions
+function test_surficial_neighborhood_exceptions
     if cosmo_skip_test_if_no_external('surfing')
         return
     end
@@ -403,7 +403,7 @@ function check_partial_neighborhood(ds,nh,args)
     end
 
 
-function XXtest_surface_subsampling
+function test_surface_subsampling
     if cosmo_skip_test_if_no_external('surfing')
         return;
     end
