@@ -6,7 +6,7 @@ function test_suite = test_surficial_neighborhood
 
     initTestSuite;
 
-function test_surficial_neighborhood_surface_dijkstra
+function XXtest_surficial_neighborhood_surface_dijkstra
     if cosmo_skip_test_if_no_external('surfing')
         return;
     end
@@ -252,7 +252,7 @@ function XXtest_surficial_neighborhood_volume_dijkstra
     % check_partial_neighborhood(ds,nh3,args3);
     % check_partial_neighborhood(ds,nh3,args3);
 
-function test_surficial_neighborhood_exceptions
+function XXtest_surficial_neighborhood_exceptions
     if cosmo_skip_test_if_no_external('surfing')
         return
     end
@@ -403,7 +403,7 @@ function check_partial_neighborhood(ds,nh,args)
     end
 
 
-function test_surface_subsampling
+function XXtest_surface_subsampling
     if cosmo_skip_test_if_no_external('surfing')
         return;
     end
