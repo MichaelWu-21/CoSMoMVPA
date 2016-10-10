@@ -60,14 +60,14 @@ function XXtest_cosmo_meta_feature_selection_classifier
                                     9 2 7 7 3 3 2 1 3 7 6 7 9 7 ]');
     general_test_classifier(cfy,opt)
 
-function XXtest_classify_nn
+function test_classify_nn
     cfy=@cosmo_classify_nn;
     handle=get_predictor(cfy);
     assert_predictions_equal(handle,[1 3 6 8 6 6 8 7 7 5 7 7 4 ...
                                     9 7 7 7 7 1 2 7 1 5 6 7 1 9]');
     general_test_classifier(cfy)
 
-function XXtest_classify_knn
+function test_classify_knn
     cfy=@cosmo_classify_knn;
     opt=struct();
     opt.knn=2;
@@ -77,7 +77,7 @@ function XXtest_classify_knn
                                     7 7 7 8 1 6 1 1 9 5 8 1 9]');
     general_test_classifier(cfy,opt);
 
-function XXtest_classify_matlabsvm
+function test_classify_matlabsvm
     cfy=@cosmo_classify_matlabsvm;
     handle=get_predictor(cfy);
     if ~cosmo_check_external('matlabsvm',false)
@@ -95,7 +95,7 @@ function XXtest_classify_matlabsvm
                                     1 7 7 7 7 1 7 7 1 7 6 7 1 9]');
     general_test_classifier(cfy);
 
-function XXtest_classify_matlabsvm_2class
+function test_classify_matlabsvm_2class
     cfy=@cosmo_classify_matlabsvm_2class;
     handle=get_predictor(cfy);
     if ~cosmo_check_external('matlabsvm',false)
