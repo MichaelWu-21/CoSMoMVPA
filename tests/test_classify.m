@@ -36,7 +36,7 @@ function test_classify_naive_bayes
 function test_classify_meta_feature_selection
     cfy=@cosmo_classify_meta_feature_selection;
     opt=struct();
-    opt.child_classifier=@cosmo_classify_lda;
+    opt.child_classifier=@cosmo_classify_nn;
     opt.feature_selector=@cosmo_anova_feature_selector;
     opt.feature_selection_ratio_to_keep=.6;
     handle=get_predictor(cfy,opt);
