@@ -71,8 +71,10 @@ function result=run_parallel_matlab(nproc,func,arg_cell,opt)
     narg_cell=numel(arg_cell);
     result_cell=cell(size(arg_cell));
 
+    func_rep=repmat({func},1,narg_cell);
+
     parfor (i=1:narg_cell, nproc)
-        result_cell{i}=func(arg_cell{i});
+        result_cell{i}=func_rep{i}(arg_cell{i});
     end
 
     result=convert_to_uniform_output_if_necessary(result_cell,opt);
